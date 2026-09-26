@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { formatCurrency } from '../utils/dashboardHelpers';
 
-const STATUS_BADGE = {
-  Completed: 'bg-success',
-  Pending: 'bg-warning text-dark',
-  Cancelled: 'bg-danger',
+const STATUS_PILL = {
+  Completed: 'status-pill--completed',
+  Pending: 'status-pill--pending',
+  Cancelled: 'status-pill--cancelled',
 };
 
 const COLUMNS = [
@@ -47,37 +47,48 @@ export default function OrdersTable({ orders }) {
 
   return (
     <div className="card shadow-sm">
-      <div className="card-body">
-        <div className="d-flex flex-wrap gap-2 mb-3">
-          <input
-            type="text"
-            className="form-control"
-            style={{ maxWidth: '260px' }}
-            placeholder="Search by customer…"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          <select
-            className="form-select"
-            style={{ maxWidth: '180px' }}
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="All">All statuses</option>
-            <option value="Completed">Completed</option>
-            <option value="Pending">Pending</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
+      <div className="card-body p-4">
+        <div className="toolbar">
+          <div>
+            <h2 className="panel-title">Orders</h2>
+            <p className="panel-sub">Click a column header to sort</p>
+          </div>
+          <div className="toolbar__controls">
+            <div className="search-field">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+              <input
+                type="text"
+                className="form-control"
+                style={{ width: '240px', maxWidth: '100%' }}
+                placeholder="Search by customer…"
+                aria-label="Search by customer"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+            </div>
+            <select
+              className="form-select"
+              style={{ width: '170px' }}
+              aria-label="Filter by status"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="All">All statuses</option>
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
         </div>
 
         <div className="table-responsive">
-          <table className="table table-striped align-middle">
+          <table className="table table-hover align-middle orders-table">
             <thead>
               <tr>
                 {COLUMNS.map((column) => (
                   <th
                     key={column.key}
-                    className="sortable-header"
+                    className={`sortable-header ${sortField === column.key ? 'is-sorted' : ''}`}
                     onClick={() => handleSort(column.key)}
                   >
                     {column.label}
@@ -89,12 +100,12 @@ export default function OrdersTable({ orders }) {
             <tbody>
               {visibleOrders.map((order) => (
                 <tr key={order.id}>
-                  <td>{order.id}</td>
+                  <td className="order-id">{order.id}</td>
                   <td>{order.customer}</td>
                   <td>{order.date}</td>
                   <td>{formatCurrency(order.amount)}</td>
                   <td>
-                    <span className={`badge ${STATUS_BADGE[order.status]}`}>{order.status}</span>
+                    <span className={`status-pill ${STATUS_PILL[order.status]}`}>{order.status}</span>
                   </td>
                 </tr>
               ))}
@@ -103,7 +114,7 @@ export default function OrdersTable({ orders }) {
         </div>
 
         {visibleOrders.length === 0 && (
-          <p className="text-muted text-center mb-0">No orders match your filters.</p>
+          <p className="text-muted text-center mt-3 mb-0">No orders match your filters.</p>
         )}
       </div>
     </div>

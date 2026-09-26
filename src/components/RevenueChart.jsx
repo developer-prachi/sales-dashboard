@@ -8,18 +8,20 @@ export default function RevenueChart({ data }) {
 
   return (
     <div className="card shadow-sm mb-4">
-      <div className="card-body">
-        <h2 className="h6 mb-3">Monthly Revenue</h2>
+      <div className="card-body p-4">
+        <h2 className="panel-title">Monthly revenue</h2>
+        <p className="panel-sub">Completed orders only</p>
         <div className="bar-chart">
           {data.map((item) => (
-            <div className="bar-chart__column" key={item.month}>
-              <div
-                className="bar-chart__bar"
-                style={{ height: `${(item.revenue / highest) * 100}%` }}
-                title={formatCurrency(item.revenue)}
-              />
-              <span className="small text-muted mt-2">{item.month}</span>
+            <div className="bar-chart__column" key={item.month} title={formatCurrency(item.revenue)}>
+              <span className="bar-chart__value">{formatCurrency(item.revenue)}</span>
+              <div className="bar-chart__bar" style={{ height: `${(item.revenue / highest) * 80}%` }} />
             </div>
+          ))}
+        </div>
+        <div className="bar-chart__labels">
+          {data.map((item) => (
+            <span key={item.month}>{item.month}</span>
           ))}
         </div>
       </div>
