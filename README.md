@@ -66,3 +66,7 @@ npm run deploy
 Builds the app and pushes `dist/` to a `gh-pages` branch - enable GitHub
 Pages on that branch in your repo settings. Or drag the `dist/` folder
 (after `npm run build`) onto [app.netlify.com/drop](https://app.netlify.com/drop).
+
+---
+
+Part of my portfolio: [developer-prachi.github.io](https://developer-prachi.github.io)
